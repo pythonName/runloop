@@ -34,4 +34,19 @@
  使用任何performSelector*****到子线程中运行方法
  使用子线程去执行周期性任务
  NSURLConnection在子线程中发起异步请求
+ 
+  3. autoreleasepool的理解
+     autoreleasepool并没有单独的数据结构，也不是之前之前理解的是一个一个内存管理池子，它实质上是由众多AutoreleasePoolPage(c++类)组成的一个双向链表，每次项目里需要创建变量并分配内存时都会先创建这么一个AutoreleasePoolPage对象，然后将这些变量的地址都存储到这个对象的指针栈里，如果当前AutoreleasePoolPage对象栈满了又会创建一个新的AutoreleasePoolPage，那么所谓的一个一个的autoreleasepool其实是以这个栈里的哨兵指针分割开来的
+  4. autoreleasepool与runloop、线程的关系
+     autoreleasepool会在runloop的一次迭代启动时创建，并在此次迭代结束时销毁，进入睡眠时先销毁旧的池子然后再创建一个新的
+     autoreleasepool与线程一一对应，就像runloop鱼线程的关系一样，一个线程，不管是主线程还是子线程，创建的时候会默认创建一个最外层的autoreleasepool，所以，通常情况下，对子线程任务块无需手动加@autoreleasepool{}，里面的自动释放对象不会产生内存泄露，但以下情况除外：
+            a、如果你编写的程序不是基于 UI 框架的，比如说命令行工具；
+ 
+            b、如果你编写的循环中创建了大量的临时对象；
+ 
+            c、如果你创建了一个辅助线程。
+  参考：http://www.cocoachina.com/ios/20150610/12093.html
+        https://www.jianshu.com/p/f87f40592023
+        https://www.jianshu.com/p/03f0c41410d9
+        http://blog.sunnyxx.com/2014/10/15/behind-autorelease/
  */

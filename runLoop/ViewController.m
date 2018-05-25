@@ -23,7 +23,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.0x6000001fb900
     _isNewThreadAborted = NO;
-
+    NSMutableSet *ss = [NSMutableSet setWithObjects:@"12",@"er", nil];
+    [ss ob:@"12"];
+    NSLog(@"pp-%@",ss);
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.frame = CGRectMake(100, 100, 100, 100);
     [btn addTarget:self action:@selector(extt) forControlEvents:UIControlEventTouchUpInside];
